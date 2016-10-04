@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>贪吃蛇</title>
+</head>
+
+<body>
+<div align="center">
+<canvas id="container" width="350" height="350" style="border:1px solid #000;"></canvas>
+</div>
+<script type="text/javascript">
+
+var sk = document.getElementById("container");
+var spe = 100; //蛇速度
+var ele = sk.getContext("2d");
+var x = y = 9;
+var a = 0; //食物
+var len = 3; //蛇长
+var map = [];//蛇路径
+var size = 9 //蛇大小
+var direction = 2;
+interval = window.setInterval(set_game_speed,spe); //移动
+function set_game_speed(){
+switch (direction){
+ case 0:x = x-size;
+ break;	
+ case 1:y = y-size;
+ break;
+ case 2:x = x+size;
+ break;
+ case 3:y = y+size;
+ break;
+}
+if (x>350 || y>350 || x<0|| y<0){ 
+ alert("Game Over!识唔识驾车啊，撞墙啦！");window.location.reload();}
+for (var i=0;i<map.length;i++){
+if (parseInt(map[i].x)==x&&parseInt(map[i].y)==y){
+ alert("Game Over!撞到自己");window.location.reload();}
+}
+if(map.length>len){
+	var cl = map.shift();
+	ele.clearRect(cl['x'], cl['y'], size, size);
+};                
+map.push({'x':x,'y':y});
+ele.fillStyle = "#069"; //蛇颜色
+ele.strokeStyle = "#069";
+ele.fillRect(x, y, size, size);
+if((a*9)==x && (a*9)==y){//吃豆豆
+rand_frog(); len++;
+}}
+document.onkeydown = function(e){//控制蛇
+var code = e.keyCode - 37;
+switch(code){
+case 0:direction = 0; //←
+break;                         
+case 1:direction = 1; //↑
+break;                         
+case 2:direction = 2; //→
+break;
+case 3:direction = 3; //↓
+break;
+}
+}
+function rand_frog(){  //随机放置食物
+a = Math.ceil(Math.random()*50);
+ele.fillStyle = "#60f"; //食物颜色
+ele.strokeStyle = "#60f";
+ele.fillRect(a*9, a*9, 9, 9);
+}
+
+rand_frog();
+</script>
+</body>
+</html>
